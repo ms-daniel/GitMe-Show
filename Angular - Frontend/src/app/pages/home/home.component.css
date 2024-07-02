@@ -1,0 +1,22 @@
+.logo-img {
+  width: 15%;
+}
+
+@media (max-width: 770px) and (min-width: 550px) {
+  .logo-img {
+    width: 20%;
+  }
+}
+
+
+@media (max-width: 549px) and (min-width: 400px){
+  .logo-img {
+    width: 25%;
+  }
+}
+
+@media (max-width: 399px){
+  .logo-img {
+    width: 30%;
+  }
+}
