@@ -1,0 +1,23 @@
+.search-input {
+  width: 70%;
+}
+
+
+@media (max-width: 770px) and (min-width: 550px) {
+  .search-input {
+    width: 100%;
+  }
+}
+
+
+@media (max-width: 549px) and (min-width: 400px){
+  .search-input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 399px){
+  .search-input {
+    width: 100%;
+  }
+}
