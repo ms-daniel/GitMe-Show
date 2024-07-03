@@ -1,0 +1,22 @@
+.follow-card {
+  background-color: rgb(156, 156, 156);
+  border-radius: 12px;
+  width: 250px;
+  height: 100px;
+}
+
+.follow-card h5 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-size {
+  font-size: 1.25em;
+}
+
+@media (max-width: 520px) {
+  .text-size {
+    font-size: 1em;
+  }
+}
+
