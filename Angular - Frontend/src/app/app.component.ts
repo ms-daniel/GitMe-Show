@@ -12,5 +12,4 @@ import { BaseUiComponent } from './components/base-ui/base-ui.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'Gitme Show';
 }
