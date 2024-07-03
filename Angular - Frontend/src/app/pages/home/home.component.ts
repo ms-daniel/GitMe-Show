@@ -6,7 +6,10 @@ import { NavComponent } from '../../components/nav/nav.component';
   standalone: true,
   imports: [NavComponent],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
+  host: {
+    'class': 'align-self-center'
+  }
 })
 export class HomeComponent {
   logoPath: string = '../../../assets/images/gitmeshow-white.png';
