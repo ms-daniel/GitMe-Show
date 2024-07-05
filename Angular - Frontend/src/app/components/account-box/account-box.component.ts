@@ -12,6 +12,7 @@ import { Component, Input } from '@angular/core';
 })
 export class AccountBoxComponent {
   imgPath: string = '../../../assets/images/female-avatar.svg';
-  @Input({ required: true }) fullName!: string;
+  @Input({ required: true }) avatar_url!: string;
+  @Input({ required: true }) github_link!: string;
   @Input({ required: true }) username!: string;
 }

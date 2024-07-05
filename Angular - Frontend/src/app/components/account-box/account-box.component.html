@@ -1,8 +1,10 @@
-<div class="row follow-card p-1 align-items-center">
-  <div class="col-4 p-0">
-    <img [src]="imgPath" class="img-fluid rounded-circle">
-  </div>
-  <div class="col-8 custom-text-box">
-    <h5 class="m-0 text-size">{{username}}</h5>
-  </div>
+<div class="row follow-card p-1">
+  <a [href]="github_link" target="_blank" class="row align-items-center">
+    <div class="col-4 p-0">
+      <img [src]="avatar_url" class="img-fluid rounded-circle">
+    </div>
+    <div class="col-8 custom-text-box">
+      <h5 class="m-0 text-size">{{username}}</h5>
+    </div>
+  </a>
 </div>
