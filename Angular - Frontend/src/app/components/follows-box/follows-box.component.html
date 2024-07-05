@@ -1,0 +1,27 @@
+<div class="row container-fluid w-100 border border-secondary rounded-4 mt-0 mb-5 p-3 justify-content-center">
+  <div class="row">
+    <input
+      class="form-control form-control-sm"
+      type="text"
+      placeholder="Procurar"
+      aria-label=".form-control-sm example"
+      [(ngModel)]="searchText"
+      (input)="search()"
+    >
+  </div>
+
+  <div class="row row-cols-xxl-4 row-cols-lg-3 row-cols-md-2 g-xxl-3 g-xl-5 g-lg-5 g-4 scroll-tainer">
+    <app-account-box *ngFor="let user of filteredItems" [avatar_url]="user.avatar_url" [username]="user.username" [github_link]="user.github_link"></app-account-box>
+
+    <div class="w-100 text-center" *ngIf="isLoading">
+      <div class="spinner-border text-primary text-center align-self-center" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div class="w-100 text-center" *ngIf="!hasFollowings">
+      <p>Não há usuários</p>
+    </div>
+  </div>
+
+</div>
