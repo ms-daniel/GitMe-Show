@@ -19,27 +19,4 @@ import { UserProfile } from './models/user-profile.model';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
-  constructor(private userService: UserProfileService){
-    //console.log(environment.api);
-    //console.log('Daniel é gostoso');
-    this.getUserProfile();
-  }
-
-  urlProfile: string = 'https://api.github.com/users/ms-daniel';
-
-  imageUrl: string = '';
-
-  getUserProfile(){
-    this.userService.getUserProfile(this.urlProfile).subscribe({
-      next: (profile : UserProfile) => {
-        console.log('user profile: ');
-        console.log(profile);
-        this.imageUrl = profile.avatar_url;
-      },
-      error: (erro) => {
-        console.log('deu errado, moral' + erro);
-      }
-    });
-  }
-}
+export class AppComponent {}
