@@ -10,11 +10,11 @@
       <div class="row row-cols-md-2 row-cols-1 mb-auto w-100">
         <div class="col primeira-fila">
           <div>
-            Nome: <span>{{ userProfile.name }}</span>
+            <span class="text-light">Nome: </span> <span class="fw-bold">{{ userProfile.name }}</span>
           </div>
 
           <div>
-            Username: <span>{{ userProfile.username }}</span>
+            <span class="text-light">Username: </span> <span class="fw-bold">{{ userProfile.username }}</span>
           </div>
 
           <div>
@@ -24,26 +24,26 @@
 
         <div class="col segunda-fila">
           <div>
-            Empresa: <span>{{ userProfile.company }}</span>
+            <span class="text-light">Empresa: </span> <span class="fw-bold">{{ userProfile.company }}</span>
           </div>
 
           <div>
-            Localização: <span>{{ userProfile.location }}</span>
+            <span class="text-light">Localização </span>: <span class="fw-bold">{{ userProfile.location }}</span>
           </div>
 
           <div>
-            Repositórios Públicos: <span>{{ userProfile.public_repos }}</span>
+            <span class="text-light">Repositórios Públicos: </span> <span class="fw-bold">{{ userProfile.public_repos }}</span>
           </div>
         </div>
       </div>
 
       <div class="row">
         <div>
-          Github: <a [href]="userProfile.github_link" target="_blank"><span>{{ userProfile.github_link }}</span></a>
+          <span class="text-light">Github: </span> <a [href]="userProfile.github_link" target="_blank"><span class="fw-bold">{{ userProfile.github_link }}</span></a>
         </div>
 
         <div>
-          Blog: <a [href]="userProfile.blog_link" target="_blank">{{ userProfile.blog_link }}</a>
+          <span class="text-light">Blog: </span> <a [href]="userProfile.blog_link" target="_blank">{{ userProfile.blog_link }}</a>
         </div>
       </div>
     </div>
@@ -53,10 +53,10 @@
 
     <div class="row justify-content-center text-center button-size">
       <div class="col-6 col-md-5">
-        FOLLOWINGS: <span>{{ userProfile.following }}</span>
+        FOLLOWINGS: <span class="fw-bold">{{ userProfile.following }}</span>
       </div>
       <div class="col-6 col-md-5">
-        FOLLOWERS: <span>{{ userProfile.followers }}</span>
+        FOLLOWERS: <span class="fw-bold">{{ userProfile.followers }}</span>
       </div>
     </div>
 
