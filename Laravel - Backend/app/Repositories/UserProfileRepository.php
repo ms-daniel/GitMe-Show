@@ -19,9 +19,23 @@ class UserProfileRepository implements UserProfileRepositoryInterface
     {
         $response = $this->client->request('GET',$url);
 
-        if ($response->getStatusCode() == 200) {
-            Log::info('Status Code: ' . $response->getStatusCode());
-            return $response->getBody();
+        $data = $response->getBody();
+
+        if ($response->getStatusCode() == 200 && $data != null) {
+            return $data;
+        }
+
+        return null;
+    }
+
+    public function findFollowings($url)
+    {
+        $response = $this->client->request('GET',$url);
+
+        $data = $response->getBody();
+
+        if ($response->getStatusCode() == 200 && $data != null) {
+            return $data;
         }
 
         return null;

@@ -6,18 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserProfileModel extends Model
 {
-    public $avatar_url;
-    public $name;
-    public $username;
-    public $bio;
-    public $github_link;
-    public $blog_link;
-    public $company;
-    public $location;
-    public $public_repos;
-    public $followers;
-    public $following;
-
+    protected $fillable = [
+        'avatar_url', 'name', 'username', 'bio', 'github_link', 'blog_link',
+        'company', 'location', 'public_repos', 'followers', 'following',
+    ];
     public function __construct(array $data)
     {
         $this->avatar_url = $data['avatar_url'] ?? null;
