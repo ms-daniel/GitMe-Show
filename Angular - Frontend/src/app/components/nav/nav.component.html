@@ -1,9 +1,11 @@
+<app-loading *ngIf="isLoading"></app-loading>
+
 <nav class="navbar my-2 w-100" data-bs-theme="dark">
   <div class="container-fluid justify-content-center">
     <form class="d-flex search-input justify-content-center" role="search">
-        <input class="form-control me-2 search-input" type="search" placeholder="Perfil URL" aria-label="Search">
+        <input class="form-control me-2 search-input" type="search" placeholder="Perfil URL" aria-label="Search" [(ngModel)]="urlProfile" name="urlProfile" [attr.disabled]="isFormDisabled ? true : null">
         <div class="align-self-center">
-          <button class="btn btn-outline-success" type="submit">Find!</button>
+          <button class="btn btn-outline-success" type="submit" (click)="getUserProfile()" [attr.disabled]="isFormDisabled ? true : null">Find!</button>
         </div>
     </form>
   </div>
