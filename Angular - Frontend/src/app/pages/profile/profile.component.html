@@ -1,20 +1,20 @@
 <app-nav class="w-100"></app-nav>
 
-<div class="container row row-cols-lg-2 row-cols-1 w-100 text-white justify-content-center">
+<div class="container row row-cols-lg-2 row-cols-1 w-100 text-white justify-content-center" *ngIf="userProfile$ | async as userProfile">
   <div class="row w-100 justify-content-center mb-xl-3">
     <div class="col-lg-3 col-md-8 col-6 align-self-start d-flex" id="avatar">
-      <img [src]="avatarPath" alt="" class="img-fluid rounded-circle">
+      <img [src]="userProfile.avatar_url" alt="" class="img-fluid rounded-circle">
     </div>
 
     <div class="col-lg-9 col-md-12 my-lg-0 my-3 d-flex align-items-start flex-column py-lg-4 text-size">
       <div class="row row-cols-md-2 row-cols-1 mb-auto w-100">
         <div class="col primeira-fila">
           <div>
-            Nome:
+            Nome: <span>{{ userProfile.name }}</span>
           </div>
 
           <div>
-            Username:
+            Username: <span>{{ userProfile.username }}</span>
           </div>
 
           <div>
@@ -24,26 +24,26 @@
 
         <div class="col segunda-fila">
           <div>
-            Empresa:
+            Empresa: <span>{{ userProfile.company }}</span>
           </div>
 
           <div>
-            Localização:
+            Localização: <span>{{ userProfile.location }}</span>
           </div>
 
           <div>
-            Repositórios Públicos:
+            Repositórios Públicos: <span>{{ userProfile.public_repos }}</span>
           </div>
         </div>
       </div>
 
       <div class="row">
         <div>
-          Github: <a href="#">Link</a>
+          Github: <a [href]="userProfile.github_link" target="_blank"><span>{{ userProfile.github_link }}</span></a>
         </div>
 
         <div>
-          Blog: <a href="#">Link</a>
+          Blog: <a [href]="userProfile.blog_link" target="_blank">{{ userProfile.blog_link }}</a>
         </div>
       </div>
     </div>
@@ -53,40 +53,14 @@
 
     <div class="row justify-content-center text-center button-size">
       <div class="col-6 col-md-5">
-        FOLLOWERS: 20
+        FOLLOWINGS: <span>{{ userProfile.following }}</span>
       </div>
       <div class="col-6 col-md-5">
-        FOLLOWINGS: 10
+        FOLLOWERS: <span>{{ userProfile.followers }}</span>
       </div>
     </div>
 
-    <div class="row row-cols-xxl-4 row-cols-lg-3 row-cols-md-2 g-xxl-3 g-xl-5 g-lg-5 g-4 container-fluid border border-secondary rounded-4 mt-0 mb-5 p-3">
-
-      <app-account-box [fullName]="'John Doe'" [username]="'johndoe'"></app-account-box>
-      <app-account-box [fullName]="'Filistina'" [username]="'fistinho'"></app-account-box>
-      <app-account-box [fullName]="'Alexandre Junior'" [username]="'so pra trestar, moreno'"></app-account-box>
-      <app-account-box [fullName]="'John Doe'" [username]="'johndoe'"></app-account-box>
-      <app-account-box [fullName]="'John Doe'" [username]="'johndoe'"></app-account-box>
-      <app-account-box [fullName]="'Filistina'" [username]="'fistinho'"></app-account-box>
-      <app-account-box [fullName]="'Teste Gostosinhoaaaaa Arrocha toda'" [username]="'exemplo -de- username- com39caracteres'"></app-account-box>
-      <app-account-box [fullName]="'John Doe'" [username]="'johndoe'"></app-account-box>
-      <app-account-box [fullName]="'John Doe'" [username]="'johndoe'"></app-account-box>
-      <app-account-box [fullName]="'Filistina'" [username]="'fistinho'"></app-account-box>
-      <app-account-box [fullName]="'Alexandre Junior'" [username]="'so pra trestar, moreno'"></app-account-box>
-      <app-account-box [fullName]="'John Doe'" [username]="'johndoe'"></app-account-box>
-      <app-account-box [fullName]="'John Doe'" [username]="'johndoe'"></app-account-box>
-      <app-account-box [fullName]="'Filistina'" [username]="'fistinho'"></app-account-box>
-      <app-account-box [fullName]="'Teste Gostosinhoaaaaa Arrocha toda'" [username]="'exemplo -de- username- com39caracteres'"></app-account-box>
-      <app-account-box [fullName]="'John Doe'" [username]="'johndoe'"></app-account-box>
-      <app-account-box [fullName]="'John Doe'" [username]="'johndoe'"></app-account-box>
-      <app-account-box [fullName]="'Filistina'" [username]="'fistinho'"></app-account-box>
-      <app-account-box [fullName]="'Alexandre Junior'" [username]="'so pra trestar, moreno'"></app-account-box>
-      <app-account-box [fullName]="'John Doe'" [username]="'johndoe'"></app-account-box>
-      <app-account-box [fullName]="'John Doe'" [username]="'johndoe'"></app-account-box>
-      <app-account-box [fullName]="'Filistina'" [username]="'fistinho'"></app-account-box>
-      <app-account-box [fullName]="'Teste Gostosinhoaaaaa Arrocha toda'" [username]="'exemplo -de- username- com39caracteres'"></app-account-box>
-      <app-account-box [fullName]="'John Doe'" [username]="'johndoe'"></app-account-box>
-    </div>
+    <app-follows-box [urlProfile]="urlProfile"></app-follows-box>
 
   </div>
 </div>
