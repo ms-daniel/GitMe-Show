@@ -20,5 +20,3 @@ use Illuminate\Http\Request;
 
 Route::get('/get', 'UserProfileController@get');
 Route::get('/getFollowings', 'UserProfileController@getFollowings');
-
-

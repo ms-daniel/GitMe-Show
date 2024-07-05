@@ -5,6 +5,9 @@ namespace App\Services;
 use App\Contracts\Repositories\UserProfileRepositoryInterface;
 use App\Contracts\Services\UserProfileServiceInterface;
 use App\Models\UserProfileModel;
+use App\Models\UserFollowModel;
+use Exception;
+use GuzzleHttp\Exception\RequestException;
 
 class UserProfileService implements UserProfileServiceInterface
 {
@@ -73,9 +76,8 @@ class UserProfileService implements UserProfileServiceInterface
     public function getUserFollowings($url)
     {
         $followings = $this->userRepository->findFollowings($url);
-        $followingsDecoded = json_decode($followings, true);
 
-        //print_r($followingsDecoded);
+        $followingsDecoded = json_decode($followings, true);
 
         if (!is_array($followingsDecoded) || empty($followingsDecoded)) {
             return null;
@@ -86,7 +88,10 @@ class UserProfileService implements UserProfileServiceInterface
 
         foreach ($followingsDecoded as $following) {
             $filtered = array_intersect_key($following, array_flip($camposParaManter));
-            $followingsFiltered[] = $filtered;
+
+            $userFollowModel = new UserFollowModel($filtered);
+
+            $followingsFiltered[] = $userFollowModel;
         }
 
         return $followingsFiltered;

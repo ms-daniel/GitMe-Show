@@ -6,6 +6,8 @@ use App\Contracts\Services\UserProfileServiceInterface;
 use App\Models\UserProfileModel;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 
 class UserProfileController extends Controller
 {
@@ -29,8 +31,12 @@ class UserProfileController extends Controller
 
             return response($userProfile, 200);
 
+        } catch (ClientException $e) {
+            return response()->json([$e->getMessage()], $e->getCode());
+        } catch (ServerException $e) {
+            return response()->json([$e->getMessage()], $e->getCode());
         } catch (\Exception $e){
-            return response()->json(['error' => 'Erro ao tentar se comunicar com servidor.'], 400);
+            return response()->json([$e->getMessage()], 400);
         }
     }
 
@@ -42,13 +48,18 @@ class UserProfileController extends Controller
             return response()->json(['error' => 'URL vazia'], 400);
         }
 
+        $url .= '/following';
+
         try{
             $userFollowings = $this->userProfileService->getUserFollowings($url);
-
-            return response($userFollowings, 200);
-
+        } catch (ClientException $e) {
+            return response()->json([$e->getMessage()], $e->getCode());
+        } catch (ServerException $e) {
+            return response()->json([$e->getMessage()], $e->getCode());
         } catch (\Exception $e){
-            return response()->json(['error' => 'Erro ao tentar se comunicar com servidor.'], 400);
+            return response()->json([$e->getMessage()], 400);
         }
+
+        return response($userFollowings, 200);
     }
 }
