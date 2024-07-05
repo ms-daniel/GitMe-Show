@@ -28,6 +28,8 @@ export class NavComponent {
 
     this.userService.requestUserProfile(this.urlProfile).subscribe({
       next: () => {
+        this.isLoading = false;
+        this.isFormDisabled = false;
         this.router.navigate(['/profile', this.urlProfile]);
       },
       error: (erro: HttpErrorResponse) => {
