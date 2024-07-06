@@ -9,8 +9,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { ActivatedRoute } from '@angular/router';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-follows-box',
@@ -46,10 +44,8 @@ export class FollowsBoxComponent implements OnInit {
   originalFollowersItems: UserFollow[] = [];
 
   wingCurrentPage: number = 1;
-  // wersCurrentPage: number = 1;
 
   wingTotalPages: number = Math.ceil(this.numberFollowings/50);
-  // wersTotalPages: number = Math.ceil(this.numberFollowers/50);
 
   constructor(
     private userService: UserProfileService, private toastr: ToastrService,
@@ -60,16 +56,16 @@ export class FollowsBoxComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.urlProfile = params['url'] ?? '';
       if (this.urlProfile) {
-        this.wingCurrentPage = 1;
-        this.wingTotalPages = Math.ceil(this.numberFollowings/this.numberFollowings);
-        this.filteredItems = [];
-
         if(this.numberFollowers > 0){
           this.callFollowers();
         }
         if(this.numberFollowings > 0){
           this.callFollowing();
         }
+        this.wingCurrentPage = 1;
+        this.wingTotalPages = Math.ceil(this.numberFollowings/50);
+        console.log(this.wingTotalPages);
+        this.filteredItems = [];
       }
     });
   }
@@ -112,20 +108,16 @@ export class FollowsBoxComponent implements OnInit {
   }
 
   getMoreFollowing(move: string): void{
-    console.log('chegooou menos');
-    console.log(this.wingTotalPages);
     if(move === '<' && this.wingCurrentPage > 1 ){
-      console.log('pegnado menos');
-      // this.filteredItems = [];
-      // this.wingCurrentPage--;
-      // this.isLoading = true;
-      // this.callFollowing();
+      this.filteredItems = [];
+      this.wingCurrentPage--;
+      this.isLoading = true;
+      this.callFollowing();
     } else if(this.wingCurrentPage < this.wingTotalPages){
-      console.log('pegnado menos');
-      // this.filteredItems = [];
-      // this.wingCurrentPage++;
-      // this.isLoading = true;
-      // this.callFollowing();
+      this.filteredItems = [];
+      this.wingCurrentPage++;
+      this.isLoading = true;
+      this.callFollowing();
     }
   }
 
@@ -147,6 +139,9 @@ export class FollowsBoxComponent implements OnInit {
     });
   }
 
+  /**
+   * filtro de busca para seguidos e seguidores
+   */
   search(): void {
     if(this.inFollowings && this.numberFollowings > 0){
       this.filteredItems = this.originalFollowingsItems.filter(item =>
