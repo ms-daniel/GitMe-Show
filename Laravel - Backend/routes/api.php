@@ -18,5 +18,7 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::get('/get', 'UserProfileController@get');
-Route::get('/getFollowings', 'UserProfileController@getFollowings');
+Route::get('/get', [UserProfileController::class, 'get']);
+Route::get('/getFollowings', [UserProfileController::class, 'getFollowings']);
+Route::get('/getFollowers', [UserProfileController::class, 'getFollowers']);
+
