@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { NavComponent } from './components/nav/nav.component';
 import { BaseUiComponent } from './components/base-ui/base-ui.component';
@@ -14,7 +14,7 @@ import { UserProfile } from './models/user-profile.model';
   imports: [
     RouterOutlet, HomeComponent,
     NavComponent, BaseUiComponent,
-    HttpClientModule
+    HttpClientModule, RouterModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
