@@ -30,7 +30,7 @@ export class NavComponent {
       next: () => {
         this.isLoading = false;
         this.isFormDisabled = false;
-        this.router.navigate(['/profile', this.urlProfile]);
+        this.router.navigate(['/profile'], { queryParams: { url: this.urlProfile } });
       },
       error: (erro: HttpErrorResponse) => {
         this.isFormDisabled = false;
