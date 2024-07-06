@@ -28,9 +28,6 @@ class UserProfileController extends Controller
 
         try{
             $userProfile = $this->userProfileService->getUserProfile($url);
-
-            return response($userProfile, 200);
-
         } catch (ClientException $e) {
             return response()->json([$e->getMessage()], $e->getCode());
         } catch (ServerException $e) {
@@ -38,17 +35,20 @@ class UserProfileController extends Controller
         } catch (\Exception $e){
             return response()->json([$e->getMessage()], 400);
         }
+
+        return response($userProfile, 200);
     }
 
     public function getFollowings(Request $request)
     {
         $url = $request->query('url');
+        $page = $request->query('page');
 
         if (empty($url)) {
             return response()->json(['error' => 'URL vazia'], 400);
         }
 
-        $url .= '/following';
+        $url .= '/following?per_page=50&page='.$page;
 
         try{
             $userFollowings = $this->userProfileService->getUserFollowings($url);
@@ -59,6 +59,7 @@ class UserProfileController extends Controller
         } catch (\Exception $e){
             return response()->json([$e->getMessage()], 400);
         }
+
         return response($userFollowings, 200);
     }
 
