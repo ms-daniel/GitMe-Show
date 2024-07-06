@@ -20,7 +20,10 @@ export class NavComponent {
   urlProfile : string = '';
   isFormDisabled : boolean = false;
 
-  constructor(private userService: UserProfileService, private toastr: ToastrService, private router: Router){}
+  constructor(
+    private userService: UserProfileService, private toastr: ToastrService,
+    private router: Router
+  ){}
 
   getUserProfile(){
     this.isFormDisabled = true;
