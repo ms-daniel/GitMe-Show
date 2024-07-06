@@ -59,7 +59,28 @@ class UserProfileController extends Controller
         } catch (\Exception $e){
             return response()->json([$e->getMessage()], 400);
         }
-
         return response($userFollowings, 200);
+    }
+
+    public function getFollowers(Request $request)
+    {
+        $url = $request->query('url');
+
+        if (empty($url)) {
+            return response()->json(['error' => 'URL vazia'], 400);
+        }
+
+        $url .= '/followers';
+
+        try{
+            $userFollowers = $this->userProfileService->getUserFollowers($url);
+        } catch (ClientException $e) {
+            return response()->json([$e->getMessage()], $e->getCode());
+        } catch (ServerException $e) {
+            return response()->json([$e->getMessage()], $e->getCode());
+        } catch (\Exception $e){
+            return response()->json([$e->getMessage()], 400);
+        }
+        return response($userFollowers, 200);
     }
 }

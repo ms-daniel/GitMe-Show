@@ -6,4 +6,5 @@ interface UserProfileRepositoryInterface
 {
     public function find($url);
     public function findFollowings($url);
+    public function findFollowers($url);
 }

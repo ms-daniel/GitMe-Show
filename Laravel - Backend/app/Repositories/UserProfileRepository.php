@@ -40,4 +40,17 @@ class UserProfileRepository implements UserProfileRepositoryInterface
 
         return null;
     }
+
+    public function findFollowers($url)
+    {
+        $response = $this->client->request('GET',$url);
+
+        $data = $response->getBody();
+
+        if ($response->getStatusCode() == 200 && $data != null) {
+            return $data;
+        }
+
+        return null;
+    }
 }
