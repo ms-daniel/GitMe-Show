@@ -17,13 +17,15 @@ export class UserProfileService {
 
   private userProfileSubject = new BehaviorSubject<UserProfile | null>(null);
   private userProfile$ = this.userProfileSubject.asObservable();
-  private urlProfile?: string;
 
   constructor(private httpClient: HttpClient){}
 
+  /**
+   * solicita informacoes do user a api
+   * @param urlProfile url para api do perfil user alvo
+   * @returns observable
+   */
   requestUserProfile(urlProfile : string){
-    this.urlProfile = urlProfile;
-
     const params = new HttpParams().set('url', urlProfile);
     return this.httpClient.get<UserProfile>(this.apiUrl + '/get', {params}).pipe(
       tap((profile: UserProfile) => {
@@ -32,14 +34,19 @@ export class UserProfileService {
     );
   }
 
+  /**
+   * @returns observable dos dados do user solicitado (se houver)
+   */
   getUserProfile(): Observable<UserProfile | null>{
     return this.userProfile$;
   }
 
-  getUrlProfile(): string | undefined {
-    return this.urlProfile;
-  }
-
+  /**
+   * solicita seguidos do user
+   * @param urlProfile url para api do perfil user alvo
+   * @param page qual pagina quer
+   * @returns de 1 ate 50 users
+   */
   getUserFollowings(urlProfile: string, page: number){
     const params = new HttpParams()
       .set('url', urlProfile)
@@ -48,6 +55,11 @@ export class UserProfileService {
     return this.httpClient.get<UserFollow[]>(this.apiUrl + '/getFollowings', {params});
   }
 
+  /**
+   *
+   * @param urlProfile url para api do perfil user alvo
+   * @returns de 1 ate 50(maximo) users
+   */
   getUserFollowers(urlProfile: string){
     const params = new HttpParams().set('url', urlProfile);
     return this.httpClient.get<UserFollow[]>(this.apiUrl + '/getFollowers', {params});
