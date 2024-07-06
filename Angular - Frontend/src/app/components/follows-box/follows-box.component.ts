@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { UserProfileService } from '../../services/user-profile.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { UserFollow } from '../../models/user-follow.model';
@@ -8,6 +8,9 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { catchError } from 'rxjs/internal/operators/catchError';
+import { ActivatedRoute } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-follows-box',
@@ -42,48 +45,60 @@ export class FollowsBoxComponent implements OnInit {
   originalFollowingsItems: UserFollow[] = [];
   originalFollowersItems: UserFollow[] = [];
 
+  wingCurrentPage: number = 1;
+  // wersCurrentPage: number = 1;
+
+  wingTotalPages: number = Math.ceil(this.numberFollowings/50);
+  // wersTotalPages: number = Math.ceil(this.numberFollowers/50);
+
   constructor(
-    private userService: UserProfileService, private toastr: ToastrService
+    private userService: UserProfileService, private toastr: ToastrService,
+    private route: ActivatedRoute
   ){}
 
   ngOnInit(): void {
-    if(this.numberFollowings > 0){
-      this.followings$ = this.userService.getUserFollowings(this.urlProfile).pipe(
-        catchError((erro: HttpErrorResponse) => {
-          this.handleError(erro, 'Seguidos');
-          return [];
-        })
-      );
+    this.route.queryParams.subscribe(params => {
+      this.urlProfile = params['url'] ?? '';
+      if (this.urlProfile) {
+        this.wingCurrentPage = 1;
+        this.wingTotalPages = Math.ceil(this.numberFollowings/this.numberFollowings);
+        this.filteredItems = [];
 
-      this.followings$.subscribe(items => {
-        this.isLoading = false;
-        if(items != null && items.length > 0){
-          this.originalFollowingsItems = items;
-          this.filteredItems = this.originalFollowingsItems;
-          this.hasFollowings = true;
-        } else {
-          this.hasFollowings = false;
+        if(this.numberFollowers > 0){
+          this.callFollowers();
         }
-      })
-    }
-
-    if(this.numberFollowers > 0){
-      this.followers$ = this.userService.getUserFollowers(this.urlProfile).pipe(
-        catchError((erro: HttpErrorResponse) => {
-          this.handleError(erro, 'Seguidores');
-          return [];
-        })
-      );
-
-      this.followers$.subscribe(items => {
-        if(items != null && items.length > 0){
-          this.originalFollowersItems = items;
-          this.hasFollowers = true;
-        } else {
-          this.hasFollowers = false;
+        if(this.numberFollowings > 0){
+          this.callFollowing();
         }
+      }
+    });
+  }
+
+  private callFollowers() {
+    this.followers$ = this.userService.getUserFollowers(this.urlProfile).pipe(
+      catchError((erro: HttpErrorResponse) => {
+        this.handleError(erro, 'Seguidores');
+        return [];
       })
-    }
+    );
+
+    this.followers$.subscribe(items => {
+      if (items != null && items.length > 0) {
+        this.originalFollowersItems = items;
+        this.hasFollowers = true;
+      } else {
+        this.hasFollowers = false;
+      }
+    });
+  }
+
+  private getFollowings(page: number): Observable<UserFollow[]> {
+    return this.userService.getUserFollowings(this.urlProfile, page).pipe(
+      catchError((erro: HttpErrorResponse) => {
+        this.handleError(erro, 'Seguidos');
+        return [];
+      })
+    );
   }
 
   switchToFollowers(): void {
@@ -94,7 +109,42 @@ export class FollowsBoxComponent implements OnInit {
   switchToFollowings(): void {
     this.inFollowings = true;
     this.filteredItems = this.originalFollowingsItems;
+  }
 
+  getMoreFollowing(move: string): void{
+    console.log('chegooou menos');
+    console.log(this.wingTotalPages);
+    if(move === '<' && this.wingCurrentPage > 1 ){
+      console.log('pegnado menos');
+      // this.filteredItems = [];
+      // this.wingCurrentPage--;
+      // this.isLoading = true;
+      // this.callFollowing();
+    } else if(this.wingCurrentPage < this.wingTotalPages){
+      console.log('pegnado menos');
+      // this.filteredItems = [];
+      // this.wingCurrentPage++;
+      // this.isLoading = true;
+      // this.callFollowing();
+    }
+  }
+
+  /**
+   * Carrega os seguidos do usuario
+   */
+  private callFollowing() {
+    this.followings$ = this.getFollowings(this.wingCurrentPage);
+
+    this.followings$.subscribe(items => {
+      this.isLoading = false;
+      if (items != null && items.length > 0) {
+        this.originalFollowingsItems = items;
+        this.filteredItems = this.originalFollowingsItems;
+        this.hasFollowings = true;
+      } else {
+        this.hasFollowings = false;
+      }
+    });
   }
 
   search(): void {
