@@ -58,11 +58,11 @@ class UserProfileService implements UserProfileServiceInterface
             $followingsFiltered[] = $userFollowModel;
         }
 
-        usort($followingsDecoded, function($a, $b) {
+        usort($followingsFiltered, function($a, $b) {
             return strcasecmp($a['github_link'], $b['github_link']);
         });
 
-        return $followingsDecoded;
+        return $followingsFiltered;
     }
 
     /**
