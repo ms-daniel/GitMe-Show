@@ -18,7 +18,11 @@
           </div>
 
           <div>
-            <button type="button" class="btn btn-outline-info">Biografia</button>
+            @if (userProfile.bio != null) {
+              <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#bioModal">Biografia</button>
+            } @else {
+              <button type="button" class="btn btn-outline-info">Sem Bio</button>
+            }
           </div>
         </div>
 
@@ -54,4 +58,26 @@
     <app-follows-box [urlProfile]="urlProfile" [numberFollowings]="userProfile.following" [numberFollowers]="userProfile.followers"></app-follows-box>
 
   </div>
+
+  <div class="d-flex justify-content-center my-3">
+    <a class="btn btn-primary" routerLink="/"> Início </a>
+  </div>
 </div>
+
+<div class="modal fade" id="bioModal" tabindex="-1" aria-labelledby="bioModalLabel" aria-hidden="true" *ngIf="userProfile$ | async as userProfile">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="bioModalLabel">Biografia: </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{userProfile.bio}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
