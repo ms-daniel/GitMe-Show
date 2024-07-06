@@ -17,10 +17,13 @@ export class UserProfileService {
 
   private userProfileSubject = new BehaviorSubject<UserProfile | null>(null);
   private userProfile$ = this.userProfileSubject.asObservable();
+  private urlProfile?: string;
 
   constructor(private httpClient: HttpClient){}
 
   requestUserProfile(urlProfile : string){
+    this.urlProfile = urlProfile;
+
     const params = new HttpParams().set('url', urlProfile);
     return this.httpClient.get<UserProfile>(this.apiUrl + '/get', {params}).pipe(
       tap((profile: UserProfile) => {
@@ -33,8 +36,15 @@ export class UserProfileService {
     return this.userProfile$;
   }
 
-  getUserFollowings(urlProfile: string){
-    const params = new HttpParams().set('url', urlProfile);
+  getUrlProfile(): string | undefined {
+    return this.urlProfile;
+  }
+
+  getUserFollowings(urlProfile: string, page: number){
+    const params = new HttpParams()
+      .set('url', urlProfile)
+      .set('page', page);
+
     return this.httpClient.get<UserFollow[]>(this.apiUrl + '/getFollowings', {params});
   }
 
