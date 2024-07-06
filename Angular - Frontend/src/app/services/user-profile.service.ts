@@ -35,7 +35,11 @@ export class UserProfileService {
 
   getUserFollowings(urlProfile: string){
     const params = new HttpParams().set('url', urlProfile);
-
     return this.httpClient.get<UserFollow[]>(this.apiUrl + '/getFollowings', {params});
+  }
+
+  getUserFollowers(urlProfile: string){
+    const params = new HttpParams().set('url', urlProfile);
+    return this.httpClient.get<UserFollow[]>(this.apiUrl + '/getFollowers', {params});
   }
 }
