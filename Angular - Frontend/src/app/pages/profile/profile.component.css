@@ -1,15 +1,8 @@
-.button-size {
-  font-size: 1.25em;
-}
-
 .text-size {
   font-size: 1.25em;
 }
 
 @media (max-width: 520px) {
-  .button-size {
-    font-size: 1em;
-  }
   .text-size {
     font-size: 1em;
   }

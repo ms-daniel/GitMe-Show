@@ -17,11 +17,16 @@ import { catchError } from 'rxjs/internal/operators/catchError';
     CommonModule
   ],
   templateUrl: './follows-box.component.html',
-  styleUrl: './follows-box.component.css'
+  styleUrl: './follows-box.component.css',
+  host:{
+    class: 'd-flex flex-column justify-content-center align-items-center'
+  }
 })
 
 export class FollowsBoxComponent implements OnInit {
   @Input({ required: true }) urlProfile!: string;
+  @Input({ required: true }) numberFollowers!: number;
+  @Input({ required: true }) numberFollowings!: number;
 
   isLoading: boolean = true;
   hasFollowings: boolean = true;
@@ -37,50 +42,67 @@ export class FollowsBoxComponent implements OnInit {
   originalFollowingsItems: UserFollow[] = [];
   originalFollowersItems: UserFollow[] = [];
 
-  constructor(private userService: UserProfileService, private toastr: ToastrService){}
+  constructor(
+    private userService: UserProfileService, private toastr: ToastrService
+  ){}
 
   ngOnInit(): void {
-    this.followings$ = this.userService.getUserFollowings(this.urlProfile).pipe(
-      catchError((erro: HttpErrorResponse) => {
-        this.handleError(erro, 'Seguidos');
-        return [];
+    if(this.numberFollowings > 0){
+      this.followings$ = this.userService.getUserFollowings(this.urlProfile).pipe(
+        catchError((erro: HttpErrorResponse) => {
+          this.handleError(erro, 'Seguidos');
+          return [];
+        })
+      );
+
+      this.followings$.subscribe(items => {
+        this.isLoading = false;
+        if(items != null && items.length > 0){
+          this.originalFollowingsItems = items;
+          this.filteredItems = this.originalFollowingsItems;
+          this.hasFollowings = true;
+        } else {
+          this.hasFollowings = false;
+        }
       })
-    );
+    }
 
-    this.followers$ = this.userService.getUserFollowers(this.urlProfile).pipe(
-      catchError((erro: HttpErrorResponse) => {
-        this.handleError(erro, 'Seguidores');
-        return [];
+    if(this.numberFollowers > 0){
+      this.followers$ = this.userService.getUserFollowers(this.urlProfile).pipe(
+        catchError((erro: HttpErrorResponse) => {
+          this.handleError(erro, 'Seguidores');
+          return [];
+        })
+      );
+
+      this.followers$.subscribe(items => {
+        if(items != null && items.length > 0){
+          this.originalFollowersItems = items;
+          this.hasFollowers = true;
+        } else {
+          this.hasFollowers = false;
+        }
       })
-    );
+    }
+  }
 
-    this.followings$.subscribe(items => {
-      this.isLoading = false;
-      if(items != null && items.length > 0){
-        this.originalFollowingsItems = items;
-        this.filteredItems = this.originalFollowingsItems;
-        this.hasFollowings = true;
-      } else {
-        this.hasFollowings = false;
-      }
-    })
+  switchToFollowers(): void {
+    this.inFollowings = false;
+    this.filteredItems = this.originalFollowersItems;
+  }
 
-    this.followers$.subscribe(items => {
-      if(items != null && items.length > 0){
-        this.originalFollowersItems = items;
-        this.hasFollowers = true;
-      } else {
-        this.hasFollowers = false;
-      }
-    })
+  switchToFollowings(): void {
+    this.inFollowings = true;
+    this.filteredItems = this.originalFollowingsItems;
+
   }
 
   search(): void {
-    if(this.inFollowings){
+    if(this.inFollowings && this.numberFollowings > 0){
       this.filteredItems = this.originalFollowingsItems.filter(item =>
         item.username.toLowerCase().startsWith(this.searchText.toLowerCase())
       );
-    } else {
+    } else if (!this.inFollowings && this.numberFollowers > 0) {
       this.filteredItems = this.originalFollowersItems.filter(item =>
         item.username.toLowerCase().startsWith(this.searchText.toLowerCase())
       );

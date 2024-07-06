@@ -1,3 +1,12 @@
+<div class="row justify-content-center text-center align-items-center my-2 w-100">
+  <div class="col-6 col-md-5">
+    <button #buttonFollowings type="button" class="btn btn-outline-primary button-size" [ngClass]="{'active-button': inFollowings}" (click)="switchToFollowings()">FOLLOWINGS: <span class="fw-bold">{{ numberFollowings }}</span></button>
+  </div>
+  <div class="col-6 col-md-5">
+    <button #buttonFollowers type="button" class="btn btn-outline-primary button-size" [ngClass]="{'active-button': !inFollowings}" (click)="switchToFollowers()">FOLLOWERS: <span class="fw-bold">{{ numberFollowers }}</span></button>
+  </div>
+</div>
+
 <div class="row container-fluid w-100 border border-secondary rounded-4 mt-0 mb-5 p-3 justify-content-center">
   <div class="row">
     <input
@@ -19,7 +28,7 @@
       </div>
     </div>
 
-    <div class="w-100 text-center" *ngIf="!hasFollowings">
+    <div class="w-100 text-center" *ngIf="numberFollowings <= 0 || (numberFollowers <= 0 && !inFollowings)">
       <p>Não há usuários</p>
     </div>
   </div>

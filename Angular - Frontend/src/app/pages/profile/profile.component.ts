@@ -6,7 +6,6 @@ import { UserProfile } from '../../models/user-profile.model';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { UserFollow } from '../../models/user-follow.model';
 import { FollowsBoxComponent } from '../../components/follows-box/follows-box.component';
 
 @Component({
@@ -33,4 +32,6 @@ export class ProfileComponent implements OnInit{
 
     this.userProfile$ = this.userService.getUserProfile();
   }
+
+
 }
