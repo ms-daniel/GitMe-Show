@@ -45,7 +45,17 @@
           <span aria-hidden="true">&laquo;</span>
         </button>
       </li>
-      <li class="page-item"><button class="page-link" href="">Página Atual: {{this.wingCurrentPage}}</button></li>
+
+      <li class="page-item dropdown">
+        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Página Atual: {{this.wingCurrentPage}}
+        </button>
+        <ul class="dropdown-menu">
+          <li *ngFor="let page of followingsPages">
+            <button class="dropdown-item btn" (click)="getMoreFollowing(page + '')">Página {{page}}</button>
+          </li>
+        </ul>
+      </li>
 
       <li class="page-item">
         <button class="page-link" (click)="getMoreFollowing('\>')" aria-label="Next">
