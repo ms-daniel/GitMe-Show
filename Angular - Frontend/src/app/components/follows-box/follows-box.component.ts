@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { UserProfileService } from '../../services/user-profile.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { UserFollow } from '../../models/user-follow.model';
@@ -24,7 +24,7 @@ import { ActivatedRoute } from '@angular/router';
   }
 })
 
-export class FollowsBoxComponent implements OnInit {
+export class FollowsBoxComponent implements OnInit, OnChanges {
   @Input({ required: true }) urlProfile!: string;
   @Input({ required: true }) numberFollowers!: number;
   @Input({ required: true }) numberFollowings!: number;
@@ -34,8 +34,8 @@ export class FollowsBoxComponent implements OnInit {
   hasFollowers: boolean = true;
   inFollowings: boolean = true;
 
-  followings$ =  new Observable<UserFollow[]>();
-  followers$ = new Observable<UserFollow[]>();
+  followings$ =  new Observable<UserFollow[] | null>();
+  followers$ = new Observable<UserFollow[] | null>();
   filteredItems: UserFollow[] = [];
 
   searchText: string = '';
@@ -47,6 +47,8 @@ export class FollowsBoxComponent implements OnInit {
 
   wingTotalPages: number = Math.ceil(this.numberFollowings/50);
 
+  followingsPages?: number[];
+
   constructor(
     private userService: UserProfileService, private toastr: ToastrService,
     private route: ActivatedRoute
@@ -56,22 +58,29 @@ export class FollowsBoxComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.urlProfile = params['url'] ?? '';
       if (this.urlProfile) {
+        this.wingCurrentPage = 1;
         if(this.numberFollowers > 0){
           this.callFollowers();
         }
         if(this.numberFollowings > 0){
           this.callFollowing();
         }
-        this.wingCurrentPage = 1;
-        this.wingTotalPages = Math.ceil(this.numberFollowings/50);
-        console.log(this.wingTotalPages);
+
+        console.log(this.followingsPages);
         this.filteredItems = [];
       }
     });
   }
+  ngOnChanges(): void {
+    this.hasFollowings = true;
+    this.wingTotalPages = Math.ceil(this.numberFollowings/50);
+    this.followingsPages = Array.from({ length: this.wingTotalPages }, (_, i) => i+1);
 
-  private callFollowers() {
-    this.followers$ = this.userService.getUserFollowers(this.urlProfile).pipe(
+    console.log('alterou: ', this.followingsPages);
+  }
+
+  private callFollowers(): void {
+    this.followers$ = this.userService.requestUserFollowers(this.urlProfile).pipe(
       catchError((erro: HttpErrorResponse) => {
         this.handleError(erro, 'Seguidores');
         return [];
@@ -88,15 +97,6 @@ export class FollowsBoxComponent implements OnInit {
     });
   }
 
-  private getFollowings(page: number): Observable<UserFollow[]> {
-    return this.userService.getUserFollowings(this.urlProfile, page).pipe(
-      catchError((erro: HttpErrorResponse) => {
-        this.handleError(erro, 'Seguidos');
-        return [];
-      })
-    );
-  }
-
   switchToFollowers(): void {
     this.inFollowings = false;
     this.filteredItems = this.originalFollowersItems;
@@ -108,14 +108,19 @@ export class FollowsBoxComponent implements OnInit {
   }
 
   getMoreFollowing(move: string): void{
-    if(move === '<' && this.wingCurrentPage > 1 ){
+    if(move === '>' && this.wingCurrentPage < this.wingTotalPages){
+      this.filteredItems = [];
+      this.wingCurrentPage++;
+      this.isLoading = true;
+      this.callFollowing();
+    } else if(move === '<' && this.wingCurrentPage > 1){
       this.filteredItems = [];
       this.wingCurrentPage--;
       this.isLoading = true;
       this.callFollowing();
-    } else if(this.wingCurrentPage < this.wingTotalPages){
+    } else if (+move != this.wingCurrentPage && move != '<' && move != '>'){
       this.filteredItems = [];
-      this.wingCurrentPage++;
+      this.wingCurrentPage = +move;
       this.isLoading = true;
       this.callFollowing();
     }
@@ -137,6 +142,15 @@ export class FollowsBoxComponent implements OnInit {
         this.hasFollowings = false;
       }
     });
+  }
+
+  private getFollowings(page: number): Observable<UserFollow[] | null> {
+    return this.userService.requestUserFollowings(this.urlProfile, page).pipe(
+      catchError ((erro: HttpErrorResponse) => {
+        this.handleError(erro, 'Seguidos');
+        return [];
+      })
+    );
   }
 
   /**
