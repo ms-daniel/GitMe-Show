@@ -10,6 +10,8 @@ Após instalar todos os pacotes tanto do Angular quanto do Laravel, certifique-s
 
 ![image](https://github.com/ms-daniel/GitMe-Show/assets/62726040/b4f07b13-33a4-4440-9d7f-1fbee0fedc93)
 
-![image](https://github.com/ms-daniel/GitMe-Show/assets/62726040/2a852f22-26d8-4a9f-aa3a-30182fbe463c)
+![346343528-2a852f22-26d8-4a9f-aa3a-30182fbe463c](https://github.com/ms-daniel/GitMe-Show/assets/62726040/26e0eb55-12df-4144-90e4-20bb49677b2b)
+
+
 
 
